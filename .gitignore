@@ -1,3 +1,4 @@
+*.csv
 temp.jpg
 filtered_images
 .idea
