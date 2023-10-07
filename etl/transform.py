@@ -18,16 +18,20 @@ class Transform:
 
         self.base_date = dc(to_date)
 
-        self.routine_max_values = {'lengthDays': 6916, 'recencyDays': 6906, 'frequency': 145,
+        # self.routine_max_values = {'lengthDays': 6916, 'recencyDays': 6906, 'frequency': 145,
+        #                            'moneyDollar': 6456486.86824}
+        self.routine_max_values = {'lengthDays': 7043, 'recencyDays': 7033, 'frequency': 90,
                                    'moneyDollar': 6456486.86824}
 
         self.routine_min_values = {'lengthDays': 1, 'recencyDays': 1, 'frequency': 1,
-                                   'moneyDollar': 1.24644}
+                                   'moneyDollar': 7.51073}
 
-        self.nroutine_max_values = {'lengthDays': 6896, 'recencyDays': 5469, 'frequency': 282,
+        # self.nroutine_max_values = {'lengthDays': 6896, 'recencyDays': 5469, 'frequency': 282,
+        #                             'moneyDollar': 36119915.05504}
+        self.nroutine_max_values = {'lengthDays': 7023, 'recencyDays': 5596, 'frequency': 282,
                                     'moneyDollar': 36119915.05504}
 
-        self.nroutine_min_values = {'lengthDays': 169, 'recencyDays': 1, 'frequency': 1,
+        self.nroutine_min_values = {'lengthDays': 268, 'recencyDays': 16, 'frequency': 1,
                                     'moneyDollar': 511544.20762}
 
     def discriminate_rn_type(self, grouped, customers_money):
@@ -36,6 +40,7 @@ class Transform:
         df_join = pd.merge(routinetype_max,
                            customers_money, on='customer_Code')
 
+        #todo : check the logic
         routine_customers = df_join[(df_join['routineTypeMax'] == 0) | ((df_join['routineTypeMax']
                                                                          != 0) & (df_join['moneyDollar'] <= 501960.0))]
 

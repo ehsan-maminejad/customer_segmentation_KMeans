@@ -1,12 +1,13 @@
 import requests
 
-from_date = "1383/01/01"
-to_date = "1401/12/10"
-customer_code = ''
+from_date = "1380/01/01"
+to_date = "1402/05/15"
+customer_code = '4'
+dataType = 2
 
 
 def run():
-    url = f"https://api.havayar.com/crm/getCustomerSalesInfo?fromDate={from_date}&toDate={to_date}&customerCode={customer_code}"
+    url = f"https://api.havayar.com/crm/getCustomerSalesInfo?fromDate={from_date}&toDate={to_date}&customerCode={customer_code}&dataType={dataType}"
 
     payload = {}
     headers = {}
