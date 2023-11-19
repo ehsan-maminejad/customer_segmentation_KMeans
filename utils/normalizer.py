@@ -9,10 +9,3 @@ class Normalizer:
     def normalize_recency(self,col,col_max,col_min):
         return (col_max - col) / (col_max - col_min)
 
-
-    # def nroutine_normalize_lfm(self, col):
-    #     return (col-col.min()) / (col.max()-col.min())
-    #
-    #
-    # def nroutine_normalize_recency(self,col):
-    #     return (col.max()-col) / (col.max()-col.min())
