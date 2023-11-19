@@ -1,5 +1,5 @@
 # 
-FROM 172:20.30.73:5000/ai/python:customized as python
+FROM 172.20.30.73:5000/ai/python:customized as python
 
 #
 
