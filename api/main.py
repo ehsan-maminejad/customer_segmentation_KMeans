@@ -23,13 +23,19 @@ class DataList(BaseModel):
 
 # Create a route that expects a POST request with a JSON body containing a list of dictionaries
 @app.post("/customer_data/", status_code=200)
-async def customer_data(data_list: DataList):
+async def customer_data(data_list: DataList, customer_type:int):
     # Process the list of dictionaries
     customer_data = data_list
-    if customer_data.data:
+    if customer_data.data and customer_type == 1:
         try:
             run(customer_data.data)
-            return {"message": "Data received and processed successfully"}
+            return {"message": "Sale unit data received and processed successfully"}
+        except Exception as e:
+            raise HTTPException(status_code=400, detail=f"error:{str(e)}, message: process was unsuccessful")
+    elif customer_data.data and customer_type == 2:
+        try:
+            # run(customer_data.data)
+            return {"message": "After sale service unit data received and processed successfully"}
         except Exception as e:
             raise HTTPException(status_code=400, detail=f"error:{str(e)}, message: process was unsuccessful")
     else:
