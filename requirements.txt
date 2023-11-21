@@ -3,4 +3,4 @@ python-dotenv
 joblib
 jdatetime
 openpyxl
-sklearn
+scikit-learn
