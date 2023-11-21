@@ -2,3 +2,5 @@ requests
 python-dotenv
 joblib
 jdatetime
+openpyxl
+sklearn
