@@ -2,7 +2,7 @@ import requests
 
 from_date = "1380/01/01"
 to_date = "1402/09/06"
-customer_code = '8710'
+customer_code = '4'
 dataType = 2
 
 

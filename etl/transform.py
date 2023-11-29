@@ -51,14 +51,18 @@ class Transform:
 
     def calculate_length(self, grouped):
         min_date = grouped['FactorDate'].min().rename(columns={'FactorDate': 'MinDate'})
+        min_date['MinDate'] = pd.to_datetime(min_date['MinDate'], utc=True)
+        min_date['MinDate'] = min_date['MinDate'].dt.tz_localize(None)
         min_date['LengthDays'] = (pd.Timestamp(
-            self.base_date, tz='Asia/Tehran') - min_date['MinDate']).dt.days
+            self.base_date) - min_date['MinDate']).dt.days
         return min_date.drop('MinDate', axis=1)
 
     def calculate_recency(self, grouped):
         max_date = grouped['FactorDate'].max().rename(columns={'FactorDate': 'MaxDate'})
+        max_date['MaxDate'] = pd.to_datetime(max_date['MaxDate'], utc=True)
+        max_date['MaxDate'] = max_date['MaxDate'].dt.tz_localize(None)
         max_date['RecencyDays'] = (pd.Timestamp(
-            self.base_date, tz='Asia/Tehran') - max_date['MaxDate']).dt.days
+            self.base_date) - max_date['MaxDate']).dt.days
         return max_date.drop('MaxDate', axis=1)
 
     def calculate_frequency(self, grouped):
