@@ -14,16 +14,15 @@ from startup import run
 import etl.extract as extract
 from etl.transform import Transform
 
-
 app = FastAPI()
 
-# Define a Pydantic model for the list of dictionaries
-class DataList(BaseModel):
-    data : List[dict]
 
-# Create a route that expects a POST request with a JSON body containing a list of dictionaries
+class DataList(BaseModel):
+    data: List[dict]
+
+
 @app.post("/customer_data/", status_code=200)
-async def customer_data(data_list: DataList, customer_type:int):
+async def customer_data(data_list: DataList, customer_type: int):
     # Process the list of dictionaries
     customer_data = data_list
     # 2756 is sale
@@ -42,6 +41,7 @@ async def customer_data(data_list: DataList, customer_type:int):
             raise HTTPException(status_code=400, detail=f"error:{str(e)}, message: process was unsuccessful")
     else:
         raise HTTPException(status_code=400, detail="No data provided")
+
 
 @app.get("/")
 async def read_index():

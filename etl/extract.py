@@ -1,8 +1,8 @@
 import requests
 
 from_date = "1380/01/01"
-to_date = "1402/05/15"
-customer_code = '4'
+to_date = "1402/09/06"
+customer_code = '8710'
 dataType = 2
 
 
@@ -16,4 +16,4 @@ def run():
         "GET", url, headers=headers, data=payload, timeout=300)
 
     if response.status_code == 200:
-        return response.json()['result']
+        return response.json()['Result']

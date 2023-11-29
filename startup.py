@@ -13,8 +13,7 @@ def run(data):
         routine_customers, nroutine_customers = transform.run(data)
         response = load.run(routine_customers, nroutine_customers)
         print(response.text)
-    # else:
-    #     log.error(f"Extract data failed")
+
 
 if __name__ == '__main__':
     data = extract.run()

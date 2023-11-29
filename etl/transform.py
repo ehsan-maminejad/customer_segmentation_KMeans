@@ -8,10 +8,10 @@ from dataclasses import dataclass
 
 @dataclass
 class CustomerRange:
-    lengthDays: int
-    recencyDays: int
-    frequency: int
-    moneyDollar: float
+    LengthDays: int
+    RecencyDays: int
+    Frequency: int
+    MoneyDollar: float
 
 
 class Transform:
@@ -35,38 +35,38 @@ class Transform:
         self.nroutine_min_values = CustomerRange(268, 16, 1, 511544.20762)
 
     def discriminate_rn_type(self, grouped, customers_money):
-        df_join = (grouped['routineType']
+        df_join = (grouped['RoutineType']
                    .max()
-                   .rename(columns={'routineType': 'routineTypeMax'})
-                   .pipe(pd.merge, customers_money, on='customer_Code'))
+                   .rename(columns={'RoutineType': 'RoutineTypeMax'})
+                   .pipe(pd.merge, customers_money, on='Customer_Code'))
 
-        routine_customers = df_join.query("routineTypeMax == 0 or (routineTypeMax != 0 and moneyDollar <= 501960.0)")
-        nroutine_customers = df_join.query("routineTypeMax != 0 and moneyDollar > 501960.0")
+        routine_customers = df_join.query("RoutineTypeMax == 0 or (RoutineTypeMax != 0 and MoneyDollar <= 501960.0)")
+        nroutine_customers = df_join.query("RoutineTypeMax != 0 and MoneyDollar > 501960.0")
 
-        return routine_customers['customer_Code'], nroutine_customers['customer_Code']
+        return routine_customers['Customer_Code'], nroutine_customers['Customer_Code']
 
     def calculate_money(self, grouped):
-        customers_money = grouped['netPriceInDollar'].sum().rename(columns={'netPriceInDollar': 'moneyDollar'})
+        customers_money = grouped['NetPriceInDollar'].sum().rename(columns={'NetPriceInDollar': 'MoneyDollar'})
         return customers_money
 
     def calculate_length(self, grouped):
-        min_date = grouped['factorDate'].min().rename(columns={'factorDate': 'minDate'})
-        min_date['lengthDays'] = (pd.Timestamp(
-            self.base_date) - min_date['minDate']).dt.days
-        return min_date.drop('minDate', axis=1)
+        min_date = grouped['FactorDate'].min().rename(columns={'FactorDate': 'MinDate'})
+        min_date['LengthDays'] = (pd.Timestamp(
+            self.base_date, tz='Asia/Tehran') - min_date['MinDate']).dt.days
+        return min_date.drop('MinDate', axis=1)
 
     def calculate_recency(self, grouped):
-        max_date = grouped['factorDate'].max().rename(columns={'factorDate': 'maxDate'})
-        max_date['recencyDays'] = (pd.Timestamp(
-            self.base_date) - max_date['maxDate']).dt.days
-        return max_date.drop('maxDate', axis=1)
+        max_date = grouped['FactorDate'].max().rename(columns={'FactorDate': 'MaxDate'})
+        max_date['RecencyDays'] = (pd.Timestamp(
+            self.base_date, tz='Asia/Tehran') - max_date['MaxDate']).dt.days
+        return max_date.drop('MaxDate', axis=1)
 
     def calculate_frequency(self, grouped):
-        return grouped.size().rename(columns={'size': 'frequency'})
+        return grouped.size().rename(columns={'size': 'Frequency'})
 
     def cal_normclv_routine(self, routine_customers=None):
         norm_result = routine_customers[
-            ['normalizedLengthDays', 'normalizedRecencyDays', 'normalizedMoneyDollar', 'normalizedFrequency']].mul(
+            ['NormalizedLengthDays', 'NormalizedRecencyDays', 'NormalizedMoneyDollar', 'NormalizedFrequency']].mul(
             self.routine_weights.values.flatten(), axis=1)
         norm_result['normalizedCLV'] = norm_result.sum(axis=1)
         routine_customers = pd.concat([routine_customers, norm_result['normalizedCLV']], axis=1)
@@ -74,7 +74,7 @@ class Transform:
 
     def cal_normclv_nroutine(self, nroutine_customers=None):
         norm_result = nroutine_customers[
-            ['normalizedLengthDays', 'normalizedRecencyDays', 'normalizedMoneyDollar', 'normalizedFrequency']].mul(
+            ['NormalizedLengthDays', 'NormalizedRecencyDays', 'NormalizedMoneyDollar', 'NormalizedFrequency']].mul(
             self.normoutine_weights.values.flatten(), axis=1)
         norm_result['normalizedCLV'] = norm_result.sum(axis=1)
         nroutine_customers = pd.concat([nroutine_customers, norm_result['normalizedCLV']], axis=1)
@@ -82,8 +82,8 @@ class Transform:
 
     def process_customers(self, data):
         customers_df = pd.DataFrame.from_records(data)
-        customers_df['factorDate'] = pd.to_datetime(customers_df['factorDate'])
-        grouped = customers_df.groupby('customer_Code', as_index=False)
+        customers_df['FactorDate'] = pd.to_datetime(customers_df['FactorDate'])
+        grouped = customers_df.groupby('Customer_Code', as_index=False)
         customers_money = self.calculate_money(grouped)
         routine_customers, nroutine_customers = self.discriminate_rn_type(grouped, customers_money)
         customers_length = self.calculate_length(grouped)
@@ -91,28 +91,30 @@ class Transform:
         customers_frequency = self.calculate_frequency(grouped)
 
         if not routine_customers.empty:
-            routine_join = pd.merge(routine_customers, customers_money, on='customer_Code')
-            routine_join = pd.merge(routine_join, customers_length, on='customer_Code')
-            routine_join = pd.merge(routine_join, customers_frequency, on='customer_Code')
-            routine_join = pd.merge(routine_join, customers_recency, on='customer_Code')
-            routine_customers = pd.merge(routine_join, grouped.first().reset_index(), on='customer_Code',
+            routine_join = pd.merge(routine_customers, customers_money, on='Customer_Code')
+            routine_join = pd.merge(routine_join, customers_length, on='Customer_Code')
+            routine_join = pd.merge(routine_join, customers_frequency, on='Customer_Code')
+            routine_join = pd.merge(routine_join, customers_recency, on='Customer_Code')
+            routine_customers = pd.merge(routine_join, grouped.first().reset_index(), on='Customer_Code',
                                          how='left').loc[:,
-                                ['customer_Code', 'fullname', 'lengthDays', 'recencyDays', 'frequency', 'moneyDollar']]
+                                ['Customer_Code', 'Fullname', "SalesTypeId", 'LengthDays', 'RecencyDays', 'Frequency',
+                                 'MoneyDollar']]
 
         if not nroutine_customers.empty:
-            nroutine_join = pd.merge(nroutine_customers, customers_money, on='customer_Code')
-            nroutine_join = pd.merge(nroutine_join, customers_length, on='customer_Code')
-            nroutine_join = pd.merge(nroutine_join, customers_frequency, on='customer_Code')
-            nroutine_join = pd.merge(nroutine_join, customers_recency, on='customer_Code')
-            nroutine_customers = pd.merge(nroutine_join, grouped.first().reset_index(), on='customer_Code',
+            nroutine_join = pd.merge(nroutine_customers, customers_money, on='Customer_Code')
+            nroutine_join = pd.merge(nroutine_join, customers_length, on='Customer_Code')
+            nroutine_join = pd.merge(nroutine_join, customers_frequency, on='Customer_Code')
+            nroutine_join = pd.merge(nroutine_join, customers_recency, on='Customer_Code')
+            nroutine_customers = pd.merge(nroutine_join, grouped.first().reset_index(), on='Customer_Code',
                                           how='left').loc[:,
-                                 ['customer_Code', 'fullname', 'lengthDays', 'recencyDays', 'frequency', 'moneyDollar']]
+                                 ['Customer_Code', 'Fullname', "SalesTypeId", 'LengthDays', 'RecencyDays', 'Frequency',
+                                  'MoneyDollar']]
 
         return routine_customers, nroutine_customers
 
     def normalize_customer_data(self, customers, lrfm_max_values, lrfm_min_values, norm):
-        cols_to_normalize = {'lengthDays': 'normalizedLengthDays', 'frequency': 'normalizedFrequency',
-                             'moneyDollar': 'normalizedMoneyDollar'}
+        cols_to_normalize = {'LengthDays': 'NormalizedLengthDays', 'Frequency': 'NormalizedFrequency',
+                             'MoneyDollar': 'NormalizedMoneyDollar'}
 
         for col_name, new_name in cols_to_normalize.items():
             max_value = getattr(lrfm_max_values, col_name)
@@ -120,15 +122,15 @@ class Transform:
             customers[new_name] = customers[col_name].apply(norm.normalize_lfm,
                                                             args=(max_value, min_value)
                                                             ).round(3)
-        customers[['normalizedRecencyDays']] = customers[['recencyDays']].apply(norm.normalize_recency,
-                                                                                args=(lrfm_max_values.recencyDays,
-                                                                                      lrfm_min_values.recencyDays)
+        customers[['NormalizedRecencyDays']] = customers[['RecencyDays']].apply(norm.normalize_recency,
+                                                                                args=(lrfm_max_values.RecencyDays,
+                                                                                      lrfm_min_values.RecencyDays)
                                                                                 ).round(3)
         return customers
 
     def calculate_normalized_clv(self, customers, weights):
         norm_result = customers[
-            ['normalizedLengthDays', 'normalizedRecencyDays', 'normalizedMoneyDollar', 'normalizedFrequency']
+            ['NormalizedLengthDays', 'NormalizedRecencyDays', 'NormalizedMoneyDollar', 'NormalizedFrequency']
         ].mul(weights.values.flatten(), axis=1)
         norm_result['normalizedCLV'] = norm_result.sum(axis=1)
         customers = pd.concat([customers, norm_result['normalizedCLV']], axis=1)

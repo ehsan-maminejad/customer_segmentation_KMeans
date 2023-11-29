@@ -40,10 +40,10 @@ class Load:
 
         if not routine_customers.empty:
             routine_customers['cluster'] = self.routine_model.predict(routine_customers[['normalizedCLV']])
-            routine_customers['rank'] = routine_customers['cluster'].map(self.routine_rank_map)
+            routine_customers['Rank'] = routine_customers['cluster'].map(self.routine_rank_map)
         if not nroutine_customers.empty:
             nroutine_customers['cluster'] = self.nroutine_model.predict(nroutine_customers[['normalizedCLV']])
-            nroutine_customers['rank'] = nroutine_customers['cluster'].map(self.nroutine_rank_map)
+            nroutine_customers['Rank'] = nroutine_customers['cluster'].map(self.nroutine_rank_map)
 
         return routine_customers, nroutine_customers
 
@@ -68,10 +68,10 @@ class Load:
         data = pd.concat([routine_customers, nroutine_customers])
         result = []
         for index, row in data.iterrows():
-            result.append({'CustomerCode': int(row['customer_Code']), 'CustomerLength': row['lengthDays'],
-                           'CustomerRecency': row['recencyDays'], 'CustomerFrequency': row['frequency'],
-                           'CustomerMoney': row['moneyDollar'], 'CustomerClv': row['normalizedCLV'],
-                           'CustomerNormalizedClv': row['normalizedCLV'], 'RankId': row['rank'],
-                           'IsRoutine': row['IsRoutine']})
+            result.append({'CustomerCode': int(row['Customer_Code']), 'CustomerLength': row['LengthDays'],
+                           'CustomerRecency': row['RecencyDays'], 'CustomerFrequency': row['Frequency'],
+                           'CustomerMoney': row['MoneyDollar'], 'CustomerClv': row['normalizedCLV'],
+                           'CustomerNormalizedClv': row['normalizedCLV'], 'RankId': row['Rank'],
+                           'IsRoutine': row['IsRoutine'], 'SalesTypeId': int(row['SalesTypeId'])})
 
         return self.load_data(result)
