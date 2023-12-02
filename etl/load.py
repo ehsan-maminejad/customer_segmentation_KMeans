@@ -71,7 +71,7 @@ class Load:
             result.append({'CustomerCode': int(row['Customer_Code']), 'CustomerLength': row['LengthDays'],
                            'CustomerRecency': row['RecencyDays'], 'CustomerFrequency': row['Frequency'],
                            'CustomerMoney': row['MoneyDollar'], 'CustomerClv': row['normalizedCLV'],
-                           'CustomerNormalizedClv': row['normalizedCLV'], 'RankId': row['Rank'],
+                           'CustomerNormalizedClv': row['normalizedCLV'], 'RankId': int(row['Rank']),
                            'IsRoutine': row['IsRoutine'], 'SalesTypeId': int(row['SalesTypeId'])})
 
         return self.load_data(result)
