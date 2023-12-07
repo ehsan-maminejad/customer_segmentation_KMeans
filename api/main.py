@@ -26,17 +26,15 @@ async def customer_data(data_list: DataList, customer_type: int):
     # Process the list of dictionaries
     customer_data = data_list
     # 2756 is sale
-    if any(customer_data.data) and customer_type == 2756:
+    if any(customer_data.data):
         try:
-            run(customer_data.data)
-            return {"message": "Sale unit data received and processed successfully"}
-        except Exception as e:
-            raise HTTPException(status_code=400, detail=f"error:{str(e)}, message: process was unsuccessful")
-    # 2757 is after sale
-    elif any(customer_data.data) and customer_type == 2757:
-        try:
-            # run(customer_data.data)
-            return {"message": "After sale service unit data received and processed successfully"}
+            run(customer_data.data, customer_type)
+            # 2756 is sale
+            if customer_type == 2756:
+                return {"message": "Sales unit data received and processed successfully"}
+            # 2757 is after sales
+            elif customer_type == 2757:
+                return {"message": "After sales service unit data received and processed successfully"}
         except Exception as e:
             raise HTTPException(status_code=400, detail=f"error:{str(e)}, message: process was unsuccessful")
     else:

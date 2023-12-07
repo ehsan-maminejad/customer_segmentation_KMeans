@@ -1,9 +1,16 @@
 import requests
 
-from_date = "1380/01/01"
+from_date = "1401/01/01"
 to_date = "1402/09/06"
-customer_code = '4'
+customer_code = '1418'
 dataType = 2
+
+# sales
+if dataType == 2:
+    customer_type = 2756
+# after_sales
+elif dataType == 3:
+    customer_type = 2757
 
 
 def run():
