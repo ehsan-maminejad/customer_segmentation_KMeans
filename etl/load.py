@@ -13,8 +13,7 @@ class Load:
 
         self.routine_model = joblib.load(os.path.join(cfg.root_path, 'models', 'routine_customers_model.pkl'))
         self.nroutine_model = joblib.load(os.path.join(cfg.root_path, 'models', 'nroutine_customers_model.pkl'))
-        # todo: remember to train and correct the model
-        self.after_sales_model = joblib.load(os.path.join(cfg.root_path, 'models', 'after_sales_customers_test.pkl'))
+        self.after_sales_model = joblib.load(os.path.join(cfg.root_path, 'models', 'after_sales_model.pkl'))
 
         # get the cluster centers
         routine_centers = self.routine_model.cluster_centers_
@@ -82,8 +81,8 @@ class Load:
         for index, row in data.iterrows():
             result.append({'CustomerCode': int(row['Customer_Code']), 'CustomerLength': row['LengthDays'],
                            'CustomerRecency': row['RecencyDays'], 'CustomerFrequency': row['Frequency'],
-                           'CustomerMoney': row['MoneyDollar'], 'CustomerClv': row['normalizedCLV'],
-                           'CustomerNormalizedClv': row['normalizedCLV'], 'RankId': int(row['Rank']),
+                           'CustomerMoney': round(row['MoneyDollar'], 3), 'CustomerClv': round(row['normalizedCLV'], 3),
+                           'CustomerNormalizedClv': round(row['normalizedCLV'], 3), 'RankId': int(row['Rank']),
                            'IsRoutine': row['IsRoutine'], 'SalesTypeId': int(row['SalesTypeId'])})
 
         return self.load_data(result)

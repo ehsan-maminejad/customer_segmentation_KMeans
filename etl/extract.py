@@ -1,9 +1,9 @@
 import requests
 
-from_date = "1401/01/01"
-to_date = "1402/09/06"
-customer_code = '1418'
-dataType = 2
+from_date = "1400/01/01"
+to_date = "1402/09/18"
+customer_code = ''
+dataType = 3
 
 # sales
 if dataType == 2:

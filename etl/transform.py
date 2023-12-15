@@ -34,9 +34,8 @@ class Transform:
         self.routine_min_values = CustomerRange(1, 1, 1, 7.51073)
         self.nroutine_max_values = CustomerRange(7023, 5596, 282, 36119915.05504)
         self.nroutine_min_values = CustomerRange(268, 16, 1, 511544.20762)
-        # todo : remember to calculate and revise them
-        self.after_sales_max_values = CustomerRange(7043, 7033, 90, 6456486.86824)
-        self.after_sales_min_values = CustomerRange(1, 1, 1, 7.51073)
+        self.after_sales_max_values = CustomerRange(5361, 5352, 438, 613552.08579)
+        self.after_sales_min_values = CustomerRange(18, 3, 1, 3.28650)
 
     def discriminate_rn_type(self, grouped, customers_money):
         df_join = (grouped['RoutineType']
@@ -126,11 +125,11 @@ class Transform:
             min_value = getattr(lrfm_min_values, col_name)
             customers[new_name] = customers[col_name].apply(norm.normalize_lfm,
                                                             args=(max_value, min_value)
-                                                            ).round(2)
+                                                            ).round(3)
         customers[['NormalizedRecencyDays']] = customers[['RecencyDays']].apply(norm.normalize_recency,
                                                                                 args=(lrfm_max_values.RecencyDays,
                                                                                       lrfm_min_values.RecencyDays)
-                                                                                ).round(2)
+                                                                                ).round(3)
         return customers
 
     def calculate_normalized_clv(self, customers, weights):
