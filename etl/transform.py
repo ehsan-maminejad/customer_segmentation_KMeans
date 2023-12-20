@@ -34,8 +34,8 @@ class Transform:
         self.routine_min_values = CustomerRange(1, 1, 1, 7.51073)
         self.nroutine_max_values = CustomerRange(7023, 5596, 282, 36119915.05504)
         self.nroutine_min_values = CustomerRange(268, 16, 1, 511544.20762)
-        self.after_sales_max_values = CustomerRange(5361, 5352, 438, 613552.08579)
-        self.after_sales_min_values = CustomerRange(18, 3, 1, 3.28650)
+        self.after_sales_max_values = CustomerRange(5372, 5363, 240, 613552.08579)
+        self.after_sales_min_values = CustomerRange(29, 2, 1, 3.28650)
 
     def discriminate_rn_type(self, grouped, customers_money):
         df_join = (grouped['RoutineType']
@@ -69,7 +69,7 @@ class Transform:
         return max_date.drop('MaxDate', axis=1)
 
     def calculate_frequency(self, grouped):
-        return grouped.size().rename(columns={'size': 'Frequency'})
+        return grouped["FactorDate"].nunique().rename(columns={'FactorDate': 'Frequency'})
 
     def process_customers(self, data, customer_type):
         customers_df = pd.DataFrame.from_records(data)

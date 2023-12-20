@@ -13,7 +13,7 @@ class Load:
 
         self.routine_model = joblib.load(os.path.join(cfg.root_path, 'models', 'routine_customers_model.pkl'))
         self.nroutine_model = joblib.load(os.path.join(cfg.root_path, 'models', 'nroutine_customers_model.pkl'))
-        self.after_sales_model = joblib.load(os.path.join(cfg.root_path, 'models', 'after_sales_model.pkl'))
+        self.after_sales_model = joblib.load(os.path.join(cfg.root_path, 'models', 'after_sales_model_1.pkl'))
 
         # get the cluster centers
         routine_centers = self.routine_model.cluster_centers_
