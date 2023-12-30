@@ -36,7 +36,7 @@ async def customer_data(data_list: DataList, customer_type: int):
             elif customer_type == 2757:
                 return {"message": "After sales service unit data received and processed successfully"}
         except Exception as e:
-            raise HTTPException(status_code=400, detail=f"error:{str(e)}, message: process was unsuccessful")
+            raise HTTPException(status_code=500, detail=f"error:{str(e)}, message: process was unsuccessful")
     else:
         raise HTTPException(status_code=400, detail="No data provided")
 
