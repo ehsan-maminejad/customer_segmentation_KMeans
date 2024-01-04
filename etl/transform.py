@@ -72,7 +72,12 @@ class Transform:
         if customer_type == 2757:
             return grouped["FactorDate"].nunique().rename(columns={'FactorDate': 'Frequency'})
         if customer_type == 2756:
-            return grouped.size().rename(columns={'size': 'Frequency'})
+            result = grouped.agg(
+                ContractCoding_NonEmpty_Unique=('ContractCoding', lambda x: x[x != ''].nunique()),
+                PreFactorCoding_NonEmpty_Unique=('PreFactorCoding', lambda x: x[x != ''].nunique())
+            )
+            result['Frequency'] = result['ContractCoding_NonEmpty_Unique'] + result['PreFactorCoding_NonEmpty_Unique']
+            return result[['Customer_Code', 'Frequency']]
 
     def process_customers(self, data, customer_type):
         customers_df = pd.DataFrame.from_records(data)
