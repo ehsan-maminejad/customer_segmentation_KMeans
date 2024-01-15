@@ -1,7 +1,7 @@
 import requests
 
-from_date = "1392/01/01"
-to_date = "1402/09/29"
+from_date = "1388/01/01"
+to_date = "1402/10/19"
 customer_code = ''
 dataType = 3
 
