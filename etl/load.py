@@ -11,8 +11,8 @@ import os
 class Load:
     def __init__(self):
 
-        self.routine_model = joblib.load(os.path.join(cfg.root_path, 'models', 'routine_customers_model_95.pkl'))
-        self.nroutine_model = joblib.load(os.path.join(cfg.root_path, 'models', 'nroutine_customers_model_95.pkl'))
+        self.routine_model = joblib.load(os.path.join(cfg.root_path, 'models', 'new_routine_customers_model_95.pkl'))
+        self.nroutine_model = joblib.load(os.path.join(cfg.root_path, 'models', 'new_nroutine_customers_model_95.pkl'))
         self.after_sales_model = joblib.load(os.path.join(cfg.root_path, 'models', 'after_sales_model_95_5.pkl'))
 
         # get the cluster centers
