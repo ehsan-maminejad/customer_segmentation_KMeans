@@ -1,9 +1,11 @@
 import pandas as pd
+from datetime import datetime
 import utils.config as cfg
 from etl.extract import to_date
 from utils.date_conversion import convert_date as dc
 from utils.normalizer import Normalizer
 from dataclasses import dataclass
+
 
 
 @dataclass
@@ -15,7 +17,8 @@ class CustomerRange:
 
 
 class Transform:
-    def __init__(self):
+    def __init__(self, current_date = None):
+        self.current_date = current_date if current_date else datetime.now()
         self._load_weights()
         self._set_base_date()
         self._set_max_min_values()
@@ -27,7 +30,8 @@ class Transform:
         self.after_sales_weights = weights.get('after-sales')
 
     def _set_base_date(self):
-        self.base_date = dc(to_date)
+        # self.base_date = dc(to_date)
+        self.base_date = self.current_date
 
     def _set_max_min_values(self):
         self.routine_max_values = CustomerRange(7043, 7033, 90, 6456486.86824)

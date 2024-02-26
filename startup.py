@@ -3,12 +3,12 @@ from etl.transform import Transform
 from etl.load import Load
 
 
-def run(data, customer_type):
+def run(data,customer_type,current_date=None):
     """
     Extract, transform and load Data
     """
     if data:
-        transform = Transform()
+        transform = Transform(current_date)
         load = Load()
         if customer_type == 2756:
             routine_customers, nroutine_customers = transform.run(data, customer_type)
