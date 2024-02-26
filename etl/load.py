@@ -79,10 +79,10 @@ class Load:
 
         result = []
         for index, row in data.iterrows():
-            result.append({'CustomerCode': int(row['Customer_Code']), 'CustomerLength': row['LengthDays'],
-                           'CustomerRecency': row['RecencyDays'], 'CustomerFrequency': row['Frequency'],
-                           'CustomerMoney': row['MoneyDollar'], 'CustomerClv': row['normalizedCLV'],
-                           'CustomerNormalizedClv': row['normalizedCLV'], 'RankId': int(row['Rank']),
+            result.append({'CustomerCode': int(row['Customer_Code']), 'CustomerLength': int(row['LengthDays']),
+                           'CustomerRecency': int(row['RecencyDays']), 'CustomerFrequency': int(row['Frequency'], 4),
+                           'CustomerMoney': round(row['MoneyDollar'], 4), 'CustomerClv': round(row['normalizedCLV'], 4),
+                           'CustomerNormalizedClv': round(row['normalizedCLV'], 4), 'RankId': int(row['Rank']),
                            'IsRoutine': row['IsRoutine'], 'SalesTypeId': int(row['SalesTypeId'])})
 
         return self.load_data(result)
